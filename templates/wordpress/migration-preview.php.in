@@ -1,0 +1,12 @@
+<?php
+/** Preview guard; place only in the restored site's wp-content/mu-plugins/. */
+if (!defined('ABSPATH')) { exit; }
+if (wp_get_environment_type() !== 'staging') { return; }
+
+function migration_preview_mail_block($result) {
+    // A blocked email is not a successful delivery.
+    return false;
+}
+add_filter('pre_wp_mail', 'migration_preview_mail_block', PHP_INT_MAX);
+add_filter('pre_option_blog_public', '__return_zero');
+add_filter('woocommerce_available_payment_gateways', '__return_empty_array', PHP_INT_MAX);

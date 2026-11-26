@@ -1,0 +1,23 @@
+name: Validate portfolio repository
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6, verified 2026-11-26
+        with:
+          persist-credentials: false
+      - name: Validate syntax and publication boundaries
+        run: python3 scripts/check_repository.py
+      - name: Run offline tests
+        run: python3 -m unittest discover -s tests -v

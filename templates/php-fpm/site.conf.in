@@ -1,0 +1,19 @@
+; Review before installing under /etc/php/8.3/fpm/pool.d/.
+[@@SITE_USER@@]
+user = @@SITE_USER@@
+group = @@SITE_USER@@
+listen = @@PHP_SOCKET@@
+listen.owner = www-data
+listen.group = www-data
+listen.mode = 0660
+pm = ondemand
+pm.max_children = 2
+pm.process_idle_timeout = 20s
+chdir = @@DOCUMENT_ROOT@@
+clear_env = yes
+security.limit_extensions = .php
+php_admin_value[memory_limit] = 256M
+php_admin_value[upload_max_filesize] = 64M
+php_admin_value[post_max_size] = 72M
+php_admin_flag[display_errors] = off
+php_admin_flag[log_errors] = on

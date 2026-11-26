@@ -1,0 +1,17 @@
+# Certificates must already exist before this vhost can pass nginx -t.
+server {
+    listen @@PUBLIC_BIND_ADDRESS@@:443 ssl;
+    server_name @@DOMAIN@@ www.@@DOMAIN@@;
+    ssl_certificate /etc/letsencrypt/live/@@DOMAIN@@/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/@@DOMAIN@@/privkey.pem;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    client_max_body_size 72m;
+
+    location / {
+        proxy_pass http://127.0.0.1:8080;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-Proto https;
+        proxy_read_timeout 120s;
+    }
+}

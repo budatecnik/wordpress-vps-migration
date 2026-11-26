@@ -1,0 +1,13 @@
+[Unit]
+Description=WordPress scheduled events for @@SITE_USER@@
+After=network-online.target mariadb.service
+
+[Service]
+Type=oneshot
+User=@@SITE_USER@@
+Group=@@SITE_USER@@
+WorkingDirectory=@@DOCUMENT_ROOT@@
+ExecStart=/usr/bin/php /opt/wordpress-migration/wp-cli.phar --path=@@DOCUMENT_ROOT@@ cron event run --due-now
+TimeoutStartSec=300
+NoNewPrivileges=true
+PrivateTmp=true

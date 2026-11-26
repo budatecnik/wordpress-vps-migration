@@ -1,0 +1,31 @@
+{
+  "migration_root": "/var/lib/wordpress-migration",
+  "public_bind_address": "203.0.113.10",
+  "source": {
+    "host": "source.example.invalid",
+    "user": "migration-reader",
+    "port": 22,
+    "identity_file": "~/.ssh/zomro_migration"
+  },
+  "sites": {
+    "embrylab": {
+      "domain": "embrylab.example.invalid",
+      "system_user": "embrylab",
+      "document_root": "/srv/www/embrylab/public",
+      "php_socket": "/run/php/embrylab.sock",
+      "sources": {
+        "wordpress": "/home/SOURCE_USER/public_html",
+        "downloads": "/home/SOURCE_USER/embrylab_downloads"
+      }
+    },
+    "capadoccia": {
+      "domain": "cappadocia.example.invalid",
+      "system_user": "capadoccia",
+      "document_root": "/srv/www/capadoccia/public",
+      "php_socket": "/run/php/capadoccia.sock",
+      "sources": {
+        "wordpress": "/home/SOURCE_USER/cappadociatour.help"
+      }
+    }
+  }
+}

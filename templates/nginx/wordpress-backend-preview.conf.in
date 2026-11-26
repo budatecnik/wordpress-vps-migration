@@ -1,0 +1,27 @@
+# Private preview backend. Remove the noindex header only during reviewed cutover.
+server {
+    listen 127.0.0.1:8080;
+    server_name @@DOMAIN@@ www.@@DOMAIN@@;
+    root @@DOCUMENT_ROOT@@;
+    index index.php;
+    client_max_body_size 72m;
+    add_header X-Robots-Tag "noindex, nofollow" always;
+
+    location / { try_files $uri $uri/ /index.php?$args; }
+    location = /wp-config.php { deny all; }
+    location = /xmlrpc.php { deny all; }
+    location ~ /\. { deny all; }
+    location ~* ^/wp-content/uploads/.*\.php(?:/|$) { deny all; }
+    location ~* \.(?:sql|bak|old|pem|key)$ { deny all; }
+
+    location ~ \.php$ {
+        try_files $uri =404;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        # Only the trusted local TLS frontend may reach this backend publicly.
+        fastcgi_param HTTPS on;
+        fastcgi_param SERVER_PORT 443;
+        fastcgi_read_timeout 120s;
+        fastcgi_pass unix:@@PHP_SOCKET@@;
+    }
+}

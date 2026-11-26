@@ -1,0 +1,10 @@
+[Unit]
+Description=Run WordPress events for @@SITE_USER@@ every five minutes
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=5min
+Unit=@@SITE_USER@@-wp-cron.service
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,11 @@
+# Explicit address avoids colliding with other HTTPS listeners on this VPS.
+server {
+    listen @@PUBLIC_BIND_ADDRESS@@:80;
+    server_name @@DOMAIN@@ www.@@DOMAIN@@;
+
+    location ^~ /.well-known/acme-challenge/ {
+        root /var/www/letsencrypt;
+        try_files $uri =404;
+    }
+    location / { return 301 https://@@DOMAIN@@$request_uri; }
+}
